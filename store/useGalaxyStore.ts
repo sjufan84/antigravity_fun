@@ -1,5 +1,5 @@
 import { create } from 'zustand'
-import { generateEmbedding } from '@/app/actions'
+import { createStar, getStars } from '@/app/actions'
 
 export interface Star {
     id: string
@@ -10,18 +10,13 @@ export interface Star {
     embedding: number[]
 }
 
-// Initial mock data for startup
-const INITIAL_STARS: Star[] = [
-    { id: '1', position: [0, 0, 0], content: 'Welcome to Nebula', color: '#00ffff', createdAt: Date.now(), embedding: [0.9, 0.1, 0.1] },
-    { id: '2', position: [5, 2, -5], content: 'Thoughts are stars', color: '#ff00ff', createdAt: Date.now(), embedding: [0.1, 0.9, 0.1] },
-    { id: '3', position: [-5, -2, -5], content: 'Connect the constellations', color: '#ffff00', createdAt: Date.now(), embedding: [0.1, 0.1, 0.9] },
-    { id: '4', position: [2, 4, 2], content: 'React Three Fiber', color: '#00ffff', createdAt: Date.now(), embedding: [0.9, 0.1, 0.1] },
-    { id: '5', position: [-2, -4, -2], content: 'The nature of consciousness', color: '#ff00ff', createdAt: Date.now(), embedding: [0.1, 0.9, 0.1] },
-]
+// Initial mock data - we can keep or clear. Ideally connect to DB.
+const INITIAL_STARS: Star[] = []
 
 interface GalaxyState {
     stars: Star[]
     addStar: (star: Omit<Star, 'id' | 'createdAt' | 'embedding'>) => Promise<void>
+    loadStars: () => Promise<void>
     activeStarId: string | null
     setActiveStar: (id: string | null) => void
     removeStar: (id: string) => void
@@ -31,19 +26,30 @@ export const useGalaxyStore = create<GalaxyState>((set) => ({
     stars: INITIAL_STARS,
     activeStarId: null,
     setActiveStar: (id) => set({ activeStarId: id }),
-    addStar: async (star) => {
+    addStar: async (starInput) => {
         try {
-            const embedding = await generateEmbedding(star.content)
+            // Call server action to create and save
+            const newStar = await createStar(
+                starInput.content,
+                starInput.position[0],
+                starInput.position[1],
+                starInput.position[2],
+                starInput.color
+            )
+
             set((state) => ({
-                stars: [...state.stars, {
-                    ...star,
-                    id: Math.random().toString(36).substring(7),
-                    createdAt: Date.now(),
-                    embedding: embedding
-                }]
+                stars: [...state.stars, newStar]
             }))
         } catch (error) {
             console.error("Failed to add star:", error)
+        }
+    },
+    loadStars: async () => {
+        try {
+            const stars = await getStars()
+            set({ stars })
+        } catch (error) {
+            console.error("Failed to load stars:", error)
         }
     },
     removeStar: (id) => set((state) => ({

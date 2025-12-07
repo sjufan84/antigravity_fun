@@ -7,12 +7,19 @@ import { StarNode } from './StarNode'
 import { ConstellationLines } from './ConstellationLines'
 import { CameraController } from './CameraController'
 
+import { useEffect } from 'react'
+
 export function GalaxyScene() {
     const stars = useGalaxyStore(state => state.stars)
+    const loadStars = useGalaxyStore(state => state.loadStars)
+
+    useEffect(() => {
+        loadStars()
+    }, [loadStars])
 
     return (
         <div className="absolute inset-0 z-0 bg-black w-full h-full">
-            <Canvas camera={{ position: [0, 0, 30], fov: 60 }}>
+            <Canvas camera={{ position: [0, 0, 22], fov: 60 }}>
                 <color attach="background" args={['#02020a']} />
                 <ambientLight intensity={0.5} />
                 <pointLight position={[10, 10, 10]} intensity={1} />

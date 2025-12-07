@@ -2,12 +2,14 @@
 import { useState } from 'react'
 import { Plus, X } from 'lucide-react'
 import { useGalaxyStore } from '@/store/useGalaxyStore'
+import { SearchBar } from './SearchBar'
 
 export function InterfaceOverlay() {
     const stars = useGalaxyStore(state => state.stars)
     const addStar = useGalaxyStore(state => state.addStar)
     const activeStarId = useGalaxyStore(state => state.activeStarId)
     const setActiveStar = useGalaxyStore(state => state.setActiveStar)
+
     const [isOpen, setIsOpen] = useState(false)
     const [content, setContent] = useState('')
     const [isSubmitting, setIsSubmitting] = useState(false)
@@ -48,6 +50,10 @@ export function InterfaceOverlay() {
                     NEBULA
                 </h1>
                 <p className="text-cyan-200/50 text-sm tracking-widest mt-1">THOUGHT GALAXY</p>
+            </div>
+
+            <div className="absolute top-8 right-8 pointer-events-auto">
+                <SearchBar />
             </div>
 
             {/* Deep Dive Panel */}
