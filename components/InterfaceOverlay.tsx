@@ -1,8 +1,9 @@
 'use client'
 import { useState } from 'react'
-import { Plus, X, Trash2 } from 'lucide-react'
+import { Plus, X, Trash2, Cloud, CloudOff } from 'lucide-react'
 import { useGalaxyStore } from '@/store/useGalaxyStore'
 import { SearchBar } from './SearchBar'
+import { NebulaSynthesisModal } from './NebulaSynthesisModal'
 
 export function InterfaceOverlay() {
     const stars = useGalaxyStore(state => state.stars)
@@ -10,6 +11,8 @@ export function InterfaceOverlay() {
     const activeStarId = useGalaxyStore(state => state.activeStarId)
     const setActiveStar = useGalaxyStore(state => state.setActiveStar)
     const removeStar = useGalaxyStore(state => state.removeStar)
+    const showNebula = useGalaxyStore(state => state.showNebula)
+    const setShowNebula = useGalaxyStore(state => state.setShowNebula)
 
     const [isOpen, setIsOpen] = useState(false)
     const [content, setContent] = useState('')
@@ -71,16 +74,36 @@ export function InterfaceOverlay() {
 
     return (
         <div className="absolute inset-0 z-10 pointer-events-none">
-            <div className="absolute top-8 left-8 pointer-events-auto">
-                <h1 className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-500">
-                    NEBULA
-                </h1>
-                <p className="text-cyan-200/50 text-sm tracking-widest mt-1">THOUGHT GALAXY</p>
+            {/* Header / Logo */}
+            <div className="absolute top-8 left-8 pointer-events-auto flex items-center gap-6">
+                <div>
+                    <h1 className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-500">
+                        NEBULA
+                    </h1>
+                    <p className="text-cyan-200/50 text-sm tracking-widest mt-1">THOUGHT GALAXY</p>
+                </div>
+
+                {/* Nebula Toggle */}
+                <button
+                    onClick={() => setShowNebula(!showNebula)}
+                    className="p-3 bg-white/5 hover:bg-white/10 rounded-full border border-white/10 transition-all hover:scale-105 active:scale-95 group"
+                    title={showNebula ? "Hide Clouds" : "Show Clouds"}
+                >
+                    {showNebula ? (
+                        <Cloud size={20} className="text-cyan-400 group-hover:text-cyan-300" />
+                    ) : (
+                        <CloudOff size={20} className="text-white/30 group-hover:text-white/60" />
+                    )}
+                </button>
             </div>
 
-            <div className="absolute top-8 right-8 pointer-events-auto">
+            {/* Top Right: Search */}
+            <div className="absolute top-4 right-4 pointer-events-auto flex items-start gap-4">
                 <SearchBar />
             </div>
+
+            {/* Center: Synthesis Modal */}
+            <NebulaSynthesisModal />
 
             {/* Deep Dive Panel - Right Sidebar */}
             {activeStar && (
@@ -154,6 +177,7 @@ export function InterfaceOverlay() {
                 </div>
             )}
 
+            {/* Bottom Right: Add Star Button & Form */}
             <div className={`absolute bottom-8 right-8 pointer-events-auto flex flex-col items-end gap-4 transition-transform duration-500 ${activeStar ? '-translate-x-[450px]' : ''}`}>
                 {isOpen && (
                     <form onSubmit={handleAdd} className="bg-black/80 backdrop-blur-xl border border-white/10 p-4 rounded-xl w-80 shadow-2xl animate-in slide-in-from-right-10 fade-in duration-300">

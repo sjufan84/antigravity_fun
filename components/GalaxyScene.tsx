@@ -4,6 +4,7 @@ import { OrbitControls, Stars } from '@react-three/drei'
 import { EffectComposer, Bloom } from '@react-three/postprocessing'
 import { useGalaxyStore } from '@/store/useGalaxyStore'
 import { StarNode } from './StarNode'
+import { NebulaField } from './NebulaField'
 
 import { ConstellationLines } from './ConstellationLines'
 import { CameraController } from './CameraController'
@@ -41,6 +42,7 @@ export function GalaxyScene() {
 
                 <group>
                     <ConstellationLines />
+                    <NebulaField />
                     {stars.map(star => (
                         <StarNode key={star.id} {...star} />
                     ))}

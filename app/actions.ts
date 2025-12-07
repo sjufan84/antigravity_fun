@@ -141,6 +141,7 @@ export async function incrementStarVisits(id: string) {
 // Legacy export if needed, or we can just remove it.
 // The prompt said "You already have generateEmbedding", implying I can use it.
 // But I'm effectively replacing its usage.
+
 export async function generateEmbedding(text: string) {
     const { embedding } = await embed({
         model,
@@ -153,4 +154,37 @@ export async function generateEmbedding(text: string) {
         },
     })
     return embedding;
+}
+
+import { generateText } from 'ai';
+
+export async function synthesizeCluster(starContents: string[]) {
+    try {
+        const prompt = `
+      You are an astronomer of thought. 
+      Analyze these distinct "star" thoughts and synthesize a name and short description for the constellation they form.
+      
+      Thoughts:
+      ${starContents.map(s => `- ${s}`).join('\n')}
+      
+      Output JSON format:
+      {
+        "name": "Creative Title",
+        "description": "A one sentence summary of the underlying theme."
+      }
+    `;
+
+        const { text } = await generateText({
+            model: google('gemini-2.5-flash'), // Using flash for speed
+            prompt: prompt,
+        });
+
+        // Clean up response if it contains markdown code blocks
+        const cleanText = text.replace(/```json/g, '').replace(/```/g, '').trim();
+
+        return JSON.parse(cleanText);
+    } catch (error) {
+        console.error("Cluster synthesis failed:", error)
+        return { name: "Nebula Cluster", description: "A gathering of thoughts." }
+    }
 }

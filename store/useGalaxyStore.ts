@@ -17,18 +17,48 @@ const INITIAL_STARS: Star[] = []
 
 interface GalaxyState {
     stars: Star[]
+
+    // Nebula Visibility
+    showNebula: boolean
+    setShowNebula: (show: boolean) => void
+
     addStar: (star: Omit<Star, 'id' | 'createdAt' | 'embedding' | 'visits'>) => Promise<void>
     loadStars: () => Promise<void>
     activeStarId: string | null
     setActiveStar: (id: string | null) => void
     removeStar: (id: string) => Promise<void>
     incrementVisits: (id: string) => void // Optimistic update
+    // Update result type to include participating stars
+    synthesisResult: { name: string; description: string; stars?: string[] } | null
+    setSynthesisResult: (result: { name: string; description: string; stars?: string[] } | null) => void
+
+    // Cache: key = sorted star IDs joined by comma
+    synthesisCache: Record<string, { name: string; description: string }>
+    addToSynthesisCache: (key: string, result: { name: string; description: string }) => void
+
+    isSynthesizing: boolean
+    setIsSynthesizing: (isSynthesizing: boolean) => void
 }
 
 export const useGalaxyStore = create<GalaxyState>((set) => ({
     stars: INITIAL_STARS,
     activeStarId: null,
     setActiveStar: (id) => set({ activeStarId: id }),
+
+    showNebula: true,
+    setShowNebula: (show) => set({ showNebula: show }),
+
+    synthesisResult: null,
+    setSynthesisResult: (result) => set({ synthesisResult: result }),
+
+    synthesisCache: {},
+    addToSynthesisCache: (key, result) => set((state) => ({
+        synthesisCache: { ...state.synthesisCache, [key]: result }
+    })),
+
+    isSynthesizing: false,
+    setIsSynthesizing: (isSynthesizing) => set({ isSynthesizing }),
+
     incrementVisits: (id) => set((state) => ({
         stars: state.stars.map(s => s.id === id ? { ...s, visits: s.visits + 1 } : s)
     })),
