@@ -1,6 +1,6 @@
 'use client'
 import { useState } from 'react'
-import { Plus, X } from 'lucide-react'
+import { Plus, X, Trash2 } from 'lucide-react'
 import { useGalaxyStore } from '@/store/useGalaxyStore'
 import { SearchBar } from './SearchBar'
 
@@ -9,12 +9,30 @@ export function InterfaceOverlay() {
     const addStar = useGalaxyStore(state => state.addStar)
     const activeStarId = useGalaxyStore(state => state.activeStarId)
     const setActiveStar = useGalaxyStore(state => state.setActiveStar)
+    const removeStar = useGalaxyStore(state => state.removeStar)
 
     const [isOpen, setIsOpen] = useState(false)
     const [content, setContent] = useState('')
     const [isSubmitting, setIsSubmitting] = useState(false)
+    const [isDeleting, setIsDeleting] = useState(false)
 
     const activeStar = stars.find(s => s.id === activeStarId)
+
+    const handleDelete = async () => {
+        if (!activeStar || isDeleting) return
+
+        if (window.confirm(`Are you sure you want to delete this star?\n\n"${activeStar.content.substring(0, 100)}${activeStar.content.length > 100 ? '...' : ''}"`)) {
+            setIsDeleting(true)
+            try {
+                await removeStar(activeStar.id)
+            } catch (error) {
+                console.error('Error deleting star:', error)
+                alert('Failed to delete star. Please try again.')
+            } finally {
+                setIsDeleting(false)
+            }
+        }
+    }
 
     const handleAdd = async (e: React.FormEvent) => {
         e.preventDefault()
@@ -75,6 +93,18 @@ export function InterfaceOverlay() {
                                 <span>•</span>
                                 <span>Signal Detected: {new Date(activeStar.createdAt).toLocaleTimeString()}</span>
                             </div>
+                        </div>
+
+                        {/* Delete Button */}
+                        <div className="mt-6 pt-6 border-t border-red-500/20">
+                            <button
+                                onClick={handleDelete}
+                                disabled={isDeleting}
+                                className="flex items-center gap-2 px-4 py-2 bg-red-500/10 hover:bg-red-500/20 border border-red-500/50 text-red-400 rounded-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-[0_0_20px_rgba(255,0,0,0.2)]"
+                            >
+                                <Trash2 size={18} />
+                                {isDeleting ? 'Deleting Star...' : 'Delete Star'}
+                            </button>
                         </div>
                     </div>
                 </div>

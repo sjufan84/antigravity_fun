@@ -106,6 +106,19 @@ function cosineSimilarity(a: number[], b: number[]) {
     return dotProduct / (magnitudeA * magnitudeB);
 }
 
+// Delete a star from the database
+export async function deleteStar(id: string) {
+    try {
+        await prisma.star.delete({
+            where: { id }
+        })
+        return { success: true }
+    } catch (error) {
+        console.error('Error deleting star:', error)
+        return { success: false, error: 'Failed to delete star' }
+    }
+}
+
 // Legacy export if needed, or we can just remove it.
 // The prompt said "You already have generateEmbedding", implying I can use it.
 // But I'm effectively replacing its usage.

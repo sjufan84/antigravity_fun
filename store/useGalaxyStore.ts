@@ -1,5 +1,5 @@
 import { create } from 'zustand'
-import { createStar, getStars } from '@/app/actions'
+import { createStar, getStars, deleteStar } from '@/app/actions'
 
 export interface Star {
     id: string
@@ -19,7 +19,7 @@ interface GalaxyState {
     loadStars: () => Promise<void>
     activeStarId: string | null
     setActiveStar: (id: string | null) => void
-    removeStar: (id: string) => void
+    removeStar: (id: string) => Promise<void>
 }
 
 export const useGalaxyStore = create<GalaxyState>((set) => ({
@@ -52,7 +52,19 @@ export const useGalaxyStore = create<GalaxyState>((set) => ({
             console.error("Failed to load stars:", error)
         }
     },
-    removeStar: (id) => set((state) => ({
-        stars: state.stars.filter(s => s.id !== id)
-    }))
+    removeStar: async (id) => {
+        try {
+            const result = await deleteStar(id)
+            if (result.success) {
+                set((state) => ({
+                    stars: state.stars.filter(s => s.id !== id),
+                    activeStarId: state.activeStarId === id ? null : state.activeStarId
+                }))
+            } else {
+                console.error('Failed to delete star:', result.error)
+            }
+        } catch (error) {
+            console.error('Error deleting star:', error)
+        }
+    }
 }))
