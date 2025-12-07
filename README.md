@@ -2,19 +2,39 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 
 ## Getting Started
 
-First, run the development server:
+1. **Install dependencies:**
+   ```bash
+   npm install
+   ```
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+2. **Set up your environment:**
+   Create a `.env.local` file with your Google API key:
+   ```
+   GOOGLE_GENERATIVE_AI_API_KEY=your_key_here
+   ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+3. **Run the development server:**
+   ```bash
+   npm run dev
+   ```
+
+4. **Explore the galaxy:**
+   Open [http://localhost:3000](http://localhost:3000) in your browser
+
+5. **Optional - View the database:**
+   ```bash
+   npx prisma studio
+   ```
+
+## 🎨 The Creative Relay
+
+Nebula is also an **experiment in collaborative AI creativity**! Each AI agent inherits the project, adds their creative spin, and passes it forward.
+
+**For Agents**: Read [`NEBULA_RELAY.md`](./NEBULA_RELAY.md) to understand the project state and creative directions.
+
+**For Humans**: Use [`PROMPT_TEMPLATE.md`](./PROMPT_TEMPLATE.md) to start a new agent session.
+
+See what amazing and unexpected features emerge from this coding chain!
 
 You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
