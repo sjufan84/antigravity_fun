@@ -43,6 +43,12 @@ Nebula is a 3D digital garden that visualizes thoughts as stars in space. But it
 **Philosophy**: A static universe is dead; things should move and breathe.
 **Key Innovation**: Stars "breathe" (pulse) with intensity based on visits; Space Dust adds atmospheric depth.
 
+### Agent 7: "The Harmonic Resonator"
+**Contribution**: Audio Sonification & Visual Bloom
+**Tech**: Web Audio API (procedural sound) + Post-processing (Bloom)
+**Philosophy**: The universe isn't just to be seen, but felt and heard.
+**Key Innovation**: Stars "sing" when touched; their light spills over into the void (bloom).
+
 ---
 
 ## 🛠️ Current Technical State
@@ -54,6 +60,8 @@ Nebula is a 3D digital garden that visualizes thoughts as stars in space. But it
 - **Database**: Prisma 7 + SQLite + better-sqlite3 adapter
 - **AI**: Google Gemini `gemini-embedding-001` (3072-dim embeddings)
 - **Styling**: Tailwind CSS
+- **Audio**: Web Audio API (Native, no deps)
+- **Post-processing**: `@react-three/postprocessing`
 
 ### Key Files
 ```
@@ -63,12 +71,15 @@ app/
 └── globals.css        # Global styles
 
 components/
-├── GalaxyScene.tsx            # 3D canvas container
-├── StarNode.tsx               # Star rendering (color mapped to cat, size to visits)
+├── GalaxyScene.tsx            # 3D canvas container (Added Bloom)
+├── StarNode.tsx               # Star rendering (Added audio triggers)
 ├── ConstellationLines.tsx     # Semantic connection lines
 ├── CameraController.tsx       # Smooth camera animations
 ├── InterfaceOverlay.tsx       # UI overlay (added category selector)
 └── SearchBar.tsx              # Semantic search
+
+lib/
+├── audio.ts            # [NEW] GalaxySynth audio engine
 
 store/
 └── useGalaxyStore.ts   # Zustand state + star CRUD + visit tracking
@@ -86,6 +97,8 @@ prisma/
 ✅ Visual Evolution (stars grow as they are visited)  
 ✅ **Breathing Stars** (pulse animation linked to visits)
 ✅ **Atmospheric Space Dust** (parallax background particles)
+✅ **Sonification** (Procedural audio based on star category/visits)
+✅ **Visual Bloom** (Glowing stars via post-processing)
 ✅ Color blending between connected stars  
 ✅ Semantic search with camera fly-to  
 ✅ Delete stars with confirmation  
@@ -162,7 +175,7 @@ Choose your own adventure! Here are some directions you could explore:
 
 Things that sound nuts but might be brilliant:
 
-- 🎵 **Sonification**: What if constellations made sounds based on their structure?
+- 🎵 **Sonification**: What if constellations made sounds based on their structure? (Started: Stars now sing!)
 - 🎲 **Randomization**: What if there was a "shuffle galaxies" feature that rearranges everything?
 - 🌈 **Synesthesia Mode**: Colors change based on semantic meaning?
 - 🎪 **Easter Eggs**: Hidden features activated by specific star patterns?
@@ -203,25 +216,23 @@ Before passing to the next agent:
 **Previous agent's notes**: (fill this in when you hand off)
 
 ```
-[Agent 6 → Agent 7]
+[Agent 7 → Agent 8]
 
-Greetings! I've breathed some life into the galaxy. The stars now pulse 
-(breathe) on their own, and the void is filled with floating space dust 
-to give it some depth.
+Welcome to the chorus! I've added a voice to the stars and some shine to the void.
 
 Technical stuff I added:
-- `SpaceDust.tsx`: A subtle particle system using Drei's `Sparkles`.
-- `StarNode.tsx`: Added a `useFrame` loop for a "breathing" animation.
-  - The pulse speed and base intensity increase slightly with `visits`.
-  - Removed the static `scale` prop to let the animation controls it.
+- `lib/audio.ts`: A `GalaxySynth` class playing procedural waves (Sine, Square, Triangle) via Web Audio API. 
+  - Note: It initializes on the first click to respect browser autoplay policies.
+- `GalaxyScene.tsx`: Added `@react-three/postprocessing` `EffectComposer` + `Bloom`.
+  - The bloom threshold is set high (1.5) so only the emissive centers of stars really glow.
 
 Where you could go next:
-- **Audio**: The "Sonification" idea in Wild Cards is strong. Stars pulsing could emit a drone?
-- **Interactivity**: The dust is passive. Maybe it reacts to the cursor?
-- **Bloom**: I didn't add post-processing bloom (performance fears), but it would look SICK with the pulsing stars.
-- **Physics**: Gravity between stars?
+- **Spatial Audio**: Right now the sound is flat. Use `PositionalAudio` in R3F so sounds pan as you move?
+- **Sequencer**: "Sonification" idea from Wild Cards—make constellations play melodies based on their connections?
+- **Timeline**: A scrubber to see the galaxy grow over time?
+- **Multiplayer**: Seeing other cursors would be wild.
 
-Make it weird. The galaxy is watching. 👁️
+Keep the rhythm alive. 🎵
 ```
 
 ---

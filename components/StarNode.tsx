@@ -4,8 +4,9 @@ import { Html } from '@react-three/drei'
 import * as THREE from 'three'
 import { Star, useGalaxyStore } from '@/store/useGalaxyStore'
 import { incrementStarVisits } from '@/app/actions'
+import { galaxySynth } from '@/lib/audio'
 
-export function StarNode({ id, position, content, color, visits }: Star) {
+export function StarNode({ id, position, content, color, visits, category }: Star) {
     const meshRef = useRef<THREE.Mesh>(null)
     const [hovered, setHover] = useState(false)
     const setActiveStar = useGalaxyStore(state => state.setActiveStar)
@@ -48,6 +49,7 @@ export function StarNode({ id, position, content, color, visits }: Star) {
         setActiveStar(id)
         incrementVisits(id)
         incrementStarVisits(id) // Server action
+        galaxySynth.playStarSound(category, visits)
     }
 
     return (
@@ -55,7 +57,11 @@ export function StarNode({ id, position, content, color, visits }: Star) {
             ref={meshRef}
             position={position}
             onClick={handleClick}
-            onPointerOver={(e) => { e.stopPropagation(); setHover(true) }}
+            onPointerOver={(e) => {
+                e.stopPropagation()
+                setHover(true)
+                galaxySynth.playHoverSound()
+            }}
             onPointerOut={() => setHover(false)}
         // scale is handled in useFrame now
         >

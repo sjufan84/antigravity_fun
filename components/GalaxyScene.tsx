@@ -1,6 +1,7 @@
 'use client'
 import { Canvas } from '@react-three/fiber'
 import { OrbitControls, Stars } from '@react-three/drei'
+import { EffectComposer, Bloom } from '@react-three/postprocessing'
 import { useGalaxyStore } from '@/store/useGalaxyStore'
 import { StarNode } from './StarNode'
 
@@ -38,6 +39,10 @@ export function GalaxyScene() {
 
                 <OrbitControls enablePan={true} enableZoom={true} minDistance={5} maxDistance={50} makeDefault />
                 <CameraController />
+
+                <EffectComposer>
+                    <Bloom luminanceThreshold={1.5} mipmapBlur intensity={1.5} radius={0.4} />
+                </EffectComposer>
             </Canvas>
         </div>
     )
