@@ -9,6 +9,8 @@ import { CameraController } from './CameraController'
 
 import { useEffect } from 'react'
 
+import { SpaceDust } from './SpaceDust'
+
 export function GalaxyScene() {
     const stars = useGalaxyStore(state => state.stars)
     const loadStars = useGalaxyStore(state => state.loadStars)
@@ -25,6 +27,7 @@ export function GalaxyScene() {
                 <pointLight position={[10, 10, 10]} intensity={1} />
 
                 <Stars radius={100} depth={50} count={7000} factor={4} saturation={0} fade speed={0.5} />
+                <SpaceDust />
 
                 <group>
                     <ConstellationLines />

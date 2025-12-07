@@ -11,14 +11,35 @@ export function StarNode({ id, position, content, color, visits }: Star) {
     const setActiveStar = useGalaxyStore(state => state.setActiveStar)
     const incrementVisits = useGalaxyStore(state => state.incrementVisits)
 
-    // Calculate scale based on visits. Base scale 1, max scale 3.
-    // Logarithmic growth so it doesn't get huge too fast.
-    const size = 1 + Math.log(visits + 1) * 0.5
+    // Base scale calculated from visits
+    const baseScale = 1 + Math.log(visits + 1) * 0.5
+
+    // Random offset so they don't all pulse in sync
+    const timeOffset = useRef(Math.random() * 100)
 
     useFrame((state, delta) => {
         if (meshRef.current) {
             meshRef.current.rotation.x += delta * 0.2
             meshRef.current.rotation.y += delta * 0.2
+
+            // Breathing animation
+            // Speed increases slightly with visits (capped)
+            const speed = 1.5 + Math.min(visits * 0.1, 2)
+            const time = state.clock.elapsedTime + timeOffset.current
+
+            // Gentle scale oscillation
+            const breathingScale = baseScale * (1 + Math.sin(time * speed) * 0.05)
+            // Apply scale (hover overrides breathing)
+            const finalScale = hovered ? baseScale * 1.5 : breathingScale
+            meshRef.current.scale.setScalar(finalScale)
+
+            // Pulse emissive intensity
+            // Material is accessed via the mesh's material property
+            const material = meshRef.current.material as THREE.MeshStandardMaterial
+            if (material) {
+                const pulse = 1 + Math.sin(time * speed) * 0.5
+                material.emissiveIntensity = hovered ? 2 : 0.5 + pulse * 0.5
+            }
         }
     })
 
@@ -36,7 +57,7 @@ export function StarNode({ id, position, content, color, visits }: Star) {
             onClick={handleClick}
             onPointerOver={(e) => { e.stopPropagation(); setHover(true) }}
             onPointerOut={() => setHover(false)}
-            scale={hovered ? size * 1.5 : size}
+        // scale is handled in useFrame now
         >
             <icosahedronGeometry args={[0.5, 1]} />
             <meshStandardMaterial color={color} emissive={color} emissiveIntensity={hovered ? 2 : 1} wireframe={!hovered} />
