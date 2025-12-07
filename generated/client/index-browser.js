@@ -124,6 +124,8 @@ exports.Prisma.StarScalarFieldEnum = {
   y: 'y',
   z: 'z',
   color: 'color',
+  category: 'category',
+  visits: 'visits',
   embedding: 'embedding',
   createdAt: 'createdAt'
 };

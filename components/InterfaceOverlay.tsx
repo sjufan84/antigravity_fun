@@ -13,6 +13,7 @@ export function InterfaceOverlay() {
 
     const [isOpen, setIsOpen] = useState(false)
     const [content, setContent] = useState('')
+    const [category, setCategory] = useState('idea')
     const [isSubmitting, setIsSubmitting] = useState(false)
     const [isDeleting, setIsDeleting] = useState(false)
 
@@ -47,12 +48,19 @@ export function InterfaceOverlay() {
                 (Math.random() - 0.5) * 20
             ]
 
-            // Random vibrant color
-            const colors = ['#00ffff', '#ff00ff', '#ffff00', '#ff0000', '#00ff00']
-            const color = colors[Math.floor(Math.random() * colors.length)]
+            // Color based on category
+            const categoryColors: Record<string, string> = {
+                'idea': '#00ffff',      // Cyan
+                'task': '#ff0000',      // Red
+                'question': '#ff00ff',  // Magenta
+                'person': '#00ff00',    // Green
+                'resource': '#ffff00'   // Yellow
+            }
+            const color = categoryColors[category] || '#ffffff'
 
-            await addStar({ content, position, color })
+            await addStar({ content, position, color, category })
             setContent('')
+            setCategory('idea')
             setIsOpen(false)
         } catch (error) {
             console.error(error)
@@ -85,13 +93,30 @@ export function InterfaceOverlay() {
                             <X size={24} />
                         </button>
 
-                        <h2 className="text-3xl font-bold text-cyan-400 mb-2">Star Details</h2>
+                        <div className="flex items-center gap-3 mb-4">
+                            <h2 className="text-3xl font-bold text-cyan-400">Star Details</h2>
+                            <span
+                                className="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider border"
+                                style={{
+                                    borderColor: activeStar.color,
+                                    color: activeStar.color,
+                                    backgroundColor: `${activeStar.color}20`
+                                }}
+                            >
+                                {activeStar.category}
+                            </span>
+                        </div>
+
                         <div className="text-white/80 text-lg leading-relaxed h-[400px] overflow-y-auto pr-4 scrollbar-thin scrollbar-thumb-cyan-500/20 scrollbar-track-transparent">
                             <p>{activeStar.content}</p>
-                            <div className="mt-8 text-sm text-white/30 border-t border-white/10 pt-4 flex gap-4">
-                                <span>ID: {activeStar.id}</span>
+                            <div className="mt-8 text-sm text-white/30 border-t border-white/10 pt-4 flex gap-4 items-center">
+                                <span>ID: {activeStar.id.slice(0, 8)}...</span>
                                 <span>•</span>
-                                <span>Signal Detected: {new Date(activeStar.createdAt).toLocaleTimeString()}</span>
+                                <span>{new Date(activeStar.createdAt).toLocaleTimeString()}</span>
+                                <span>•</span>
+                                <span className="text-white/50 flex items-center gap-1">
+                                    <span className="text-cyan-400 font-bold">{activeStar.visits}</span> visits
+                                </span>
                             </div>
                         </div>
 
@@ -117,11 +142,29 @@ export function InterfaceOverlay() {
                             value={content}
                             onChange={(e) => setContent(e.target.value)}
                             placeholder="What's on your mind?"
-                            className="w-full bg-white/5 border border-white/10 rounded-lg p-3 text-white placeholder:text-white/30 focus:outline-none focus:ring-1 focus:ring-cyan-500 min-h-[100px] resize-none"
+                            className="w-full bg-white/5 border border-white/10 rounded-lg p-3 text-white placeholder:text-white/30 focus:outline-none focus:ring-1 focus:ring-cyan-500 min-h-[100px] resize-none mb-3"
                             autoFocus
                             disabled={isSubmitting}
                         />
-                        <div className="flex justify-end mt-3 gap-2">
+
+                        {/* Category Selector */}
+                        <div className="flex gap-2 mb-3 overflow-x-auto pb-1 scrollbar-none">
+                            {['idea', 'task', 'question', 'person'].map((cat) => (
+                                <button
+                                    key={cat}
+                                    type="button"
+                                    onClick={() => setCategory(cat)}
+                                    className={`px-3 py-1 rounded-full text-xs font-medium transition-colors border capitalize ${category === cat
+                                        ? 'bg-white/20 border-white text-white'
+                                        : 'bg-white/5 border-transparent text-white/50 hover:bg-white/10 hover:text-white/80'
+                                        }`}
+                                >
+                                    {cat}
+                                </button>
+                            ))}
+                        </div>
+
+                        <div className="flex justify-end gap-2">
                             <button
                                 type="button"
                                 onClick={() => setIsOpen(false)}

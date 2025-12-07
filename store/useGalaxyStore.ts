@@ -6,6 +6,8 @@ export interface Star {
     position: [number, number, number]
     content: string
     color: string
+    category: string
+    visits: number
     createdAt: number
     embedding: number[]
 }
@@ -15,17 +17,21 @@ const INITIAL_STARS: Star[] = []
 
 interface GalaxyState {
     stars: Star[]
-    addStar: (star: Omit<Star, 'id' | 'createdAt' | 'embedding'>) => Promise<void>
+    addStar: (star: Omit<Star, 'id' | 'createdAt' | 'embedding' | 'visits'>) => Promise<void>
     loadStars: () => Promise<void>
     activeStarId: string | null
     setActiveStar: (id: string | null) => void
     removeStar: (id: string) => Promise<void>
+    incrementVisits: (id: string) => void // Optimistic update
 }
 
 export const useGalaxyStore = create<GalaxyState>((set) => ({
     stars: INITIAL_STARS,
     activeStarId: null,
     setActiveStar: (id) => set({ activeStarId: id }),
+    incrementVisits: (id) => set((state) => ({
+        stars: state.stars.map(s => s.id === id ? { ...s, visits: s.visits + 1 } : s)
+    })),
     addStar: async (starInput) => {
         try {
             // Call server action to create and save
@@ -34,7 +40,8 @@ export const useGalaxyStore = create<GalaxyState>((set) => ({
                 starInput.position[0],
                 starInput.position[1],
                 starInput.position[2],
-                starInput.color
+                starInput.color,
+                starInput.category
             )
 
             set((state) => ({

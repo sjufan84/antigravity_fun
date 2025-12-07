@@ -7,7 +7,8 @@ import { prisma } from '@/lib/prisma'
 const model = google.textEmbedding('gemini-embedding-001');
 
 // Create a new star and save to DB
-export async function createStar(content: string, x: number, y: number, z: number, color: string) {
+// Create a new star and save to DB
+export async function createStar(content: string, x: number, y: number, z: number, color: string, category: string = 'idea') {
     try {
         const { embedding } = await embed({
             model,
@@ -27,6 +28,7 @@ export async function createStar(content: string, x: number, y: number, z: numbe
                 y,
                 z,
                 color,
+                category,
                 embedding: JSON.stringify(embedding),
             }
         })
@@ -35,6 +37,8 @@ export async function createStar(content: string, x: number, y: number, z: numbe
             id: star.id,
             content: star.content,
             color: star.color,
+            category: star.category,
+            visits: star.visits,
             createdAt: star.createdAt.getTime(),
             embedding: embedding,
             position: [star.x, star.y, star.z] as [number, number, number]
@@ -53,6 +57,8 @@ export async function getStars() {
             id: s.id,
             content: s.content,
             color: s.color,
+            category: s.category,
+            visits: s.visits,
             createdAt: s.createdAt.getTime(),
             embedding: JSON.parse(s.embedding) as number[],
             position: [s.x, s.y, s.z] as [number, number, number]
@@ -116,6 +122,19 @@ export async function deleteStar(id: string) {
     } catch (error) {
         console.error('Error deleting star:', error)
         return { success: false, error: 'Failed to delete star' }
+    }
+}
+
+export async function incrementStarVisits(id: string) {
+    try {
+        const star = await prisma.star.update({
+            where: { id },
+            data: { visits: { increment: 1 } }
+        })
+        return { success: true, visits: star.visits }
+    } catch (error) {
+        console.error('Error incrementing visits:', error)
+        return { success: false }
     }
 }
 

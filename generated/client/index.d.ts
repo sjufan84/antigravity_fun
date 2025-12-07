@@ -878,12 +878,14 @@ export namespace Prisma {
     x: number | null
     y: number | null
     z: number | null
+    visits: number | null
   }
 
   export type StarSumAggregateOutputType = {
     x: number | null
     y: number | null
     z: number | null
+    visits: number | null
   }
 
   export type StarMinAggregateOutputType = {
@@ -893,6 +895,8 @@ export namespace Prisma {
     y: number | null
     z: number | null
     color: string | null
+    category: string | null
+    visits: number | null
     embedding: string | null
     createdAt: Date | null
   }
@@ -904,6 +908,8 @@ export namespace Prisma {
     y: number | null
     z: number | null
     color: string | null
+    category: string | null
+    visits: number | null
     embedding: string | null
     createdAt: Date | null
   }
@@ -915,6 +921,8 @@ export namespace Prisma {
     y: number
     z: number
     color: number
+    category: number
+    visits: number
     embedding: number
     createdAt: number
     _all: number
@@ -925,12 +933,14 @@ export namespace Prisma {
     x?: true
     y?: true
     z?: true
+    visits?: true
   }
 
   export type StarSumAggregateInputType = {
     x?: true
     y?: true
     z?: true
+    visits?: true
   }
 
   export type StarMinAggregateInputType = {
@@ -940,6 +950,8 @@ export namespace Prisma {
     y?: true
     z?: true
     color?: true
+    category?: true
+    visits?: true
     embedding?: true
     createdAt?: true
   }
@@ -951,6 +963,8 @@ export namespace Prisma {
     y?: true
     z?: true
     color?: true
+    category?: true
+    visits?: true
     embedding?: true
     createdAt?: true
   }
@@ -962,6 +976,8 @@ export namespace Prisma {
     y?: true
     z?: true
     color?: true
+    category?: true
+    visits?: true
     embedding?: true
     createdAt?: true
     _all?: true
@@ -1060,6 +1076,8 @@ export namespace Prisma {
     y: number
     z: number
     color: string
+    category: string
+    visits: number
     embedding: string
     createdAt: Date
     _count: StarCountAggregateOutputType | null
@@ -1090,6 +1108,8 @@ export namespace Prisma {
     y?: boolean
     z?: boolean
     color?: boolean
+    category?: boolean
+    visits?: boolean
     embedding?: boolean
     createdAt?: boolean
   }, ExtArgs["result"]["star"]>
@@ -1101,6 +1121,8 @@ export namespace Prisma {
     y?: boolean
     z?: boolean
     color?: boolean
+    category?: boolean
+    visits?: boolean
     embedding?: boolean
     createdAt?: boolean
   }, ExtArgs["result"]["star"]>
@@ -1112,6 +1134,8 @@ export namespace Prisma {
     y?: boolean
     z?: boolean
     color?: boolean
+    category?: boolean
+    visits?: boolean
     embedding?: boolean
     createdAt?: boolean
   }, ExtArgs["result"]["star"]>
@@ -1123,11 +1147,13 @@ export namespace Prisma {
     y?: boolean
     z?: boolean
     color?: boolean
+    category?: boolean
+    visits?: boolean
     embedding?: boolean
     createdAt?: boolean
   }
 
-  export type StarOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "content" | "x" | "y" | "z" | "color" | "embedding" | "createdAt", ExtArgs["result"]["star"]>
+  export type StarOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "content" | "x" | "y" | "z" | "color" | "category" | "visits" | "embedding" | "createdAt", ExtArgs["result"]["star"]>
 
   export type $StarPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Star"
@@ -1139,6 +1165,8 @@ export namespace Prisma {
       y: number
       z: number
       color: string
+      category: string
+      visits: number
       embedding: string
       createdAt: Date
     }, ExtArgs["result"]["star"]>
@@ -1570,6 +1598,8 @@ export namespace Prisma {
     readonly y: FieldRef<"Star", 'Float'>
     readonly z: FieldRef<"Star", 'Float'>
     readonly color: FieldRef<"Star", 'String'>
+    readonly category: FieldRef<"Star", 'String'>
+    readonly visits: FieldRef<"Star", 'Int'>
     readonly embedding: FieldRef<"Star", 'String'>
     readonly createdAt: FieldRef<"Star", 'DateTime'>
   }
@@ -1954,6 +1984,8 @@ export namespace Prisma {
     y: 'y',
     z: 'z',
     color: 'color',
+    category: 'category',
+    visits: 'visits',
     embedding: 'embedding',
     createdAt: 'createdAt'
   };
@@ -1989,16 +2021,16 @@ export namespace Prisma {
 
 
   /**
-   * Reference to a field of type 'DateTime'
+   * Reference to a field of type 'Int'
    */
-  export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime'>
+  export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
     
 
 
   /**
-   * Reference to a field of type 'Int'
+   * Reference to a field of type 'DateTime'
    */
-  export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
+  export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime'>
     
   /**
    * Deep Input Types
@@ -2015,6 +2047,8 @@ export namespace Prisma {
     y?: FloatFilter<"Star"> | number
     z?: FloatFilter<"Star"> | number
     color?: StringFilter<"Star"> | string
+    category?: StringFilter<"Star"> | string
+    visits?: IntFilter<"Star"> | number
     embedding?: StringFilter<"Star"> | string
     createdAt?: DateTimeFilter<"Star"> | Date | string
   }
@@ -2026,6 +2060,8 @@ export namespace Prisma {
     y?: SortOrder
     z?: SortOrder
     color?: SortOrder
+    category?: SortOrder
+    visits?: SortOrder
     embedding?: SortOrder
     createdAt?: SortOrder
   }
@@ -2040,6 +2076,8 @@ export namespace Prisma {
     y?: FloatFilter<"Star"> | number
     z?: FloatFilter<"Star"> | number
     color?: StringFilter<"Star"> | string
+    category?: StringFilter<"Star"> | string
+    visits?: IntFilter<"Star"> | number
     embedding?: StringFilter<"Star"> | string
     createdAt?: DateTimeFilter<"Star"> | Date | string
   }, "id">
@@ -2051,6 +2089,8 @@ export namespace Prisma {
     y?: SortOrder
     z?: SortOrder
     color?: SortOrder
+    category?: SortOrder
+    visits?: SortOrder
     embedding?: SortOrder
     createdAt?: SortOrder
     _count?: StarCountOrderByAggregateInput
@@ -2070,6 +2110,8 @@ export namespace Prisma {
     y?: FloatWithAggregatesFilter<"Star"> | number
     z?: FloatWithAggregatesFilter<"Star"> | number
     color?: StringWithAggregatesFilter<"Star"> | string
+    category?: StringWithAggregatesFilter<"Star"> | string
+    visits?: IntWithAggregatesFilter<"Star"> | number
     embedding?: StringWithAggregatesFilter<"Star"> | string
     createdAt?: DateTimeWithAggregatesFilter<"Star"> | Date | string
   }
@@ -2081,6 +2123,8 @@ export namespace Prisma {
     y: number
     z: number
     color: string
+    category?: string
+    visits?: number
     embedding: string
     createdAt?: Date | string
   }
@@ -2092,6 +2136,8 @@ export namespace Prisma {
     y: number
     z: number
     color: string
+    category?: string
+    visits?: number
     embedding: string
     createdAt?: Date | string
   }
@@ -2103,6 +2149,8 @@ export namespace Prisma {
     y?: FloatFieldUpdateOperationsInput | number
     z?: FloatFieldUpdateOperationsInput | number
     color?: StringFieldUpdateOperationsInput | string
+    category?: StringFieldUpdateOperationsInput | string
+    visits?: IntFieldUpdateOperationsInput | number
     embedding?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -2114,6 +2162,8 @@ export namespace Prisma {
     y?: FloatFieldUpdateOperationsInput | number
     z?: FloatFieldUpdateOperationsInput | number
     color?: StringFieldUpdateOperationsInput | string
+    category?: StringFieldUpdateOperationsInput | string
+    visits?: IntFieldUpdateOperationsInput | number
     embedding?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -2125,6 +2175,8 @@ export namespace Prisma {
     y: number
     z: number
     color: string
+    category?: string
+    visits?: number
     embedding: string
     createdAt?: Date | string
   }
@@ -2136,6 +2188,8 @@ export namespace Prisma {
     y?: FloatFieldUpdateOperationsInput | number
     z?: FloatFieldUpdateOperationsInput | number
     color?: StringFieldUpdateOperationsInput | string
+    category?: StringFieldUpdateOperationsInput | string
+    visits?: IntFieldUpdateOperationsInput | number
     embedding?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -2147,6 +2201,8 @@ export namespace Prisma {
     y?: FloatFieldUpdateOperationsInput | number
     z?: FloatFieldUpdateOperationsInput | number
     color?: StringFieldUpdateOperationsInput | string
+    category?: StringFieldUpdateOperationsInput | string
+    visits?: IntFieldUpdateOperationsInput | number
     embedding?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -2176,6 +2232,17 @@ export namespace Prisma {
     not?: NestedFloatFilter<$PrismaModel> | number
   }
 
+  export type IntFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[]
+    notIn?: number[]
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntFilter<$PrismaModel> | number
+  }
+
   export type DateTimeFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     in?: Date[] | string[]
@@ -2194,6 +2261,8 @@ export namespace Prisma {
     y?: SortOrder
     z?: SortOrder
     color?: SortOrder
+    category?: SortOrder
+    visits?: SortOrder
     embedding?: SortOrder
     createdAt?: SortOrder
   }
@@ -2202,6 +2271,7 @@ export namespace Prisma {
     x?: SortOrder
     y?: SortOrder
     z?: SortOrder
+    visits?: SortOrder
   }
 
   export type StarMaxOrderByAggregateInput = {
@@ -2211,6 +2281,8 @@ export namespace Prisma {
     y?: SortOrder
     z?: SortOrder
     color?: SortOrder
+    category?: SortOrder
+    visits?: SortOrder
     embedding?: SortOrder
     createdAt?: SortOrder
   }
@@ -2222,6 +2294,8 @@ export namespace Prisma {
     y?: SortOrder
     z?: SortOrder
     color?: SortOrder
+    category?: SortOrder
+    visits?: SortOrder
     embedding?: SortOrder
     createdAt?: SortOrder
   }
@@ -2230,6 +2304,7 @@ export namespace Prisma {
     x?: SortOrder
     y?: SortOrder
     z?: SortOrder
+    visits?: SortOrder
   }
 
   export type StringWithAggregatesFilter<$PrismaModel = never> = {
@@ -2265,6 +2340,22 @@ export namespace Prisma {
     _max?: NestedFloatFilter<$PrismaModel>
   }
 
+  export type IntWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[]
+    notIn?: number[]
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedIntFilter<$PrismaModel>
+    _min?: NestedIntFilter<$PrismaModel>
+    _max?: NestedIntFilter<$PrismaModel>
+  }
+
   export type DateTimeWithAggregatesFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     in?: Date[] | string[]
@@ -2284,6 +2375,14 @@ export namespace Prisma {
   }
 
   export type FloatFieldUpdateOperationsInput = {
+    set?: number
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
+  }
+
+  export type IntFieldUpdateOperationsInput = {
     set?: number
     increment?: number
     decrement?: number
@@ -2320,6 +2419,17 @@ export namespace Prisma {
     not?: NestedFloatFilter<$PrismaModel> | number
   }
 
+  export type NestedIntFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[]
+    notIn?: number[]
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntFilter<$PrismaModel> | number
+  }
+
   export type NestedDateTimeFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     in?: Date[] | string[]
@@ -2348,17 +2458,6 @@ export namespace Prisma {
     _max?: NestedStringFilter<$PrismaModel>
   }
 
-  export type NestedIntFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel>
-    in?: number[]
-    notIn?: number[]
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntFilter<$PrismaModel> | number
-  }
-
   export type NestedFloatWithAggregatesFilter<$PrismaModel = never> = {
     equals?: number | FloatFieldRefInput<$PrismaModel>
     in?: number[]
@@ -2373,6 +2472,22 @@ export namespace Prisma {
     _sum?: NestedFloatFilter<$PrismaModel>
     _min?: NestedFloatFilter<$PrismaModel>
     _max?: NestedFloatFilter<$PrismaModel>
+  }
+
+  export type NestedIntWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[]
+    notIn?: number[]
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedIntFilter<$PrismaModel>
+    _min?: NestedIntFilter<$PrismaModel>
+    _max?: NestedIntFilter<$PrismaModel>
   }
 
   export type NestedDateTimeWithAggregatesFilter<$PrismaModel = never> = {

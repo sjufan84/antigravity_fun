@@ -96,6 +96,8 @@ exports.Prisma.StarScalarFieldEnum = {
   y: 'y',
   z: 'z',
   color: 'color',
+  category: 'category',
+  visits: 'visits',
   embedding: 'embedding',
   createdAt: 'createdAt'
 };
@@ -117,10 +119,10 @@ const config = {
   "clientVersion": "7.1.0",
   "engineVersion": "ab635e6b9d606fa5c8fb8b1a7f909c3c3c1c98ba",
   "activeProvider": "sqlite",
-  "inlineSchema": "generator client {\n  provider   = \"prisma-client-js\"\n  output     = \"../generated/client\"\n  engineType = \"library\"\n}\n\ndatasource db {\n  provider = \"sqlite\"\n}\n\nmodel Star {\n  id        String   @id @default(uuid())\n  content   String\n  x         Float\n  y         Float\n  z         Float\n  color     String\n  embedding String // Storing as JSON string\n  createdAt DateTime @default(now())\n}\n"
+  "inlineSchema": "generator client {\n  provider   = \"prisma-client-js\"\n  output     = \"../generated/client\"\n  engineType = \"library\"\n}\n\ndatasource db {\n  provider = \"sqlite\"\n}\n\nmodel Star {\n  id        String   @id @default(uuid())\n  content   String\n  x         Float\n  y         Float\n  z         Float\n  color     String\n  category  String   @default(\"idea\") // idea, task, question, person\n  visits    Int      @default(0)\n  embedding String // Storing as JSON string\n  createdAt DateTime @default(now())\n}\n"
 }
 
-config.runtimeDataModel = JSON.parse("{\"models\":{\"Star\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"content\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"x\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"y\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"z\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"color\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"embedding\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"}],\"dbName\":null}},\"enums\":{},\"types\":{}}")
+config.runtimeDataModel = JSON.parse("{\"models\":{\"Star\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"content\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"x\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"y\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"z\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"color\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"category\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"visits\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"embedding\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"}],\"dbName\":null}},\"enums\":{},\"types\":{}}")
 defineDmmfProperty(exports.Prisma, config.runtimeDataModel)
 config.compilerWasm = {
   getRuntime: async () => require('./query_compiler_bg.js'),

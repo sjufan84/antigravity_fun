@@ -37,7 +37,17 @@ You are Player 4. The universe is connected and alive.
     - Server Action `searchStars` performs in-memory cosine similarity on embeddings.
     - Selecting a result (or top match) triggers `setActiveStar` which flies the camera.
 
-### 3. Refinement
+### 3. Star Evolution (Taxonomy & Traffic)
+- **Status:** **[DONE]** (Agent 5)
+- **Implementation:**
+    - `Star` model updated with `category` and `visits`.
+    - **InterfaceOverlay** has a category selector.
+    - **StarNode** visualization:
+        - Color = Category (Blue: Idea, Red: Task, Purple: Question, Green: Person).
+        - Size = Base size + logarithmic scaling based on `visits`.
+    - **Actions:** `incrementStarVisits` runs on click.
+
+### 4. Refinement
 - **Status:** **[TODO]**
 - **Goal:** Polish the experience.
 - **Ideas:**
