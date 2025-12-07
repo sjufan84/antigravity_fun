@@ -82,21 +82,28 @@ export function InterfaceOverlay() {
                 <SearchBar />
             </div>
 
-            {/* Deep Dive Panel */}
+            {/* Deep Dive Panel - Right Sidebar */}
             {activeStar && (
-                <div className="absolute inset-0 z-20 flex items-center justify-center p-12 pointer-events-none">
-                    <div className="bg-black/90 backdrop-blur-3xl border border-cyan-500/30 p-8 rounded-2xl max-w-4xl w-full shadow-[0_0_100px_rgba(0,255,255,0.2)] pointer-events-auto relative animate-in zoom-in-95 duration-500">
-                        <button
-                            onClick={() => setActiveStar(null)}
-                            className="absolute top-4 right-4 text-white/50 hover:text-white transition-colors"
-                        >
-                            <X size={24} />
-                        </button>
+                <div className="absolute top-0 right-0 bottom-0 z-20 w-[450px] pointer-events-none flex flex-col justify-end sm:justify-start">
+                    <div className="bg-slate-950/30 backdrop-blur-3xl border-l border-white/10 h-full w-full shadow-[-20px_0_40px_rgba(0,0,0,0.5)] pointer-events-auto relative animate-in slide-in-from-right duration-500 flex flex-col overflow-hidden supports-[backdrop-filter]:bg-slate-950/10">
+                        {/* Geometric Decoration */}
+                        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-cyan-500/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 pointer-events-none" />
+                        <div className="absolute bottom-0 left-0 w-[300px] h-[300px] bg-purple-500/5 rounded-full blur-3xl translate-y-1/3 -translate-x-1/3 pointer-events-none" />
 
-                        <div className="flex items-center gap-3 mb-4">
-                            <h2 className="text-3xl font-bold text-cyan-400">Star Details</h2>
+                        {/* Header */}
+                        <div className="p-8 border-b border-white/5 shrink-0 relative z-10 bg-gradient-to-b from-white/5 to-transparent">
+                            <button
+                                onClick={() => setActiveStar(null)}
+                                className="absolute top-6 right-6 text-white/50 hover:text-white transition-colors"
+                            >
+                                <X size={24} />
+                            </button>
+
+                            <div className="flex items-center gap-3 mb-2">
+                                <h2 className="text-3xl font-bold text-cyan-400">Star Details</h2>
+                            </div>
                             <span
-                                className="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider border"
+                                className="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider border inline-block"
                                 style={{
                                     borderColor: activeStar.color,
                                     color: activeStar.color,
@@ -107,35 +114,47 @@ export function InterfaceOverlay() {
                             </span>
                         </div>
 
-                        <div className="text-white/80 text-lg leading-relaxed h-[400px] overflow-y-auto pr-4 scrollbar-thin scrollbar-thumb-cyan-500/20 scrollbar-track-transparent">
-                            <p>{activeStar.content}</p>
-                            <div className="mt-8 text-sm text-white/30 border-t border-white/10 pt-4 flex gap-4 items-center">
-                                <span>ID: {activeStar.id.slice(0, 8)}...</span>
-                                <span>•</span>
-                                <span>{new Date(activeStar.createdAt).toLocaleTimeString()}</span>
-                                <span>•</span>
-                                <span className="text-white/50 flex items-center gap-1">
-                                    <span className="text-cyan-400 font-bold">{activeStar.visits}</span> visits
-                                </span>
+                        {/* Scrollable Content */}
+                        <div className="flex-1 overflow-y-auto p-8 scrollbar-thin scrollbar-thumb-white/10 scrollbar-track-transparent relative z-10">
+                            <div className="text-slate-200 text-lg leading-relaxed whitespace-pre-wrap font-light tracking-wide selection:bg-cyan-500/30">
+                                {activeStar.content}
                             </div>
                         </div>
 
-                        {/* Delete Button */}
-                        <div className="mt-6 pt-6 border-t border-red-500/20">
-                            <button
-                                onClick={handleDelete}
-                                disabled={isDeleting}
-                                className="flex items-center gap-2 px-4 py-2 bg-red-500/10 hover:bg-red-500/20 border border-red-500/50 text-red-400 rounded-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-[0_0_20px_rgba(255,0,0,0.2)]"
-                            >
-                                <Trash2 size={18} />
-                                {isDeleting ? 'Deleting Star...' : 'Delete Star'}
-                            </button>
+                        {/* Footer / Metadata */}
+                        <div className="p-8 border-t border-white/5 shrink-0 bg-black/40 relative z-10 backdrop-blur-sm">
+                            <div className="text-sm text-slate-400 flex flex-col gap-3 mb-6 font-mono">
+                                <div className="flex justify-between">
+                                    <span>ID</span>
+                                    <span className="font-mono text-white/50">{activeStar.id.slice(0, 8)}</span>
+                                </div>
+                                <div className="flex justify-between">
+                                    <span>Created</span>
+                                    <span>{new Date(activeStar.createdAt).toLocaleDateString()}</span>
+                                </div>
+                                <div className="flex justify-between items-center">
+                                    <span>Visits</span>
+                                    <span className="text-cyan-400 font-bold text-lg">{activeStar.visits}</span>
+                                </div>
+                            </div>
+
+                            {/* Delete Button */}
+                            <div className="mt-6 pt-6 border-t border-red-500/20">
+                                <button
+                                    onClick={handleDelete}
+                                    disabled={isDeleting}
+                                    className="flex items-center gap-2 px-4 py-2 bg-red-500/10 hover:bg-red-500/20 border border-red-500/50 text-red-400 rounded-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-[0_0_20px_rgba(255,0,0,0.2)]"
+                                >
+                                    <Trash2 size={18} />
+                                    {isDeleting ? 'Deleting Star...' : 'Delete Star'}
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
             )}
 
-            <div className="absolute bottom-8 right-8 pointer-events-auto flex flex-col items-end gap-4">
+            <div className={`absolute bottom-8 right-8 pointer-events-auto flex flex-col items-end gap-4 transition-transform duration-500 ${activeStar ? '-translate-x-[450px]' : ''}`}>
                 {isOpen && (
                     <form onSubmit={handleAdd} className="bg-black/80 backdrop-blur-xl border border-white/10 p-4 rounded-xl w-80 shadow-2xl animate-in slide-in-from-right-10 fade-in duration-300">
                         <textarea

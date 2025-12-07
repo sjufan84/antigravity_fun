@@ -11,6 +11,15 @@ import { CameraController } from './CameraController'
 import { useEffect } from 'react'
 
 import { SpaceDust } from './SpaceDust'
+import { useFrame } from '@react-three/fiber'
+import { galaxySynth } from '@/lib/audio'
+
+function AudioController() {
+    useFrame(({ camera }) => {
+        galaxySynth.updateListener(camera)
+    })
+    return null
+}
 
 export function GalaxyScene() {
     const stars = useGalaxyStore(state => state.stars)
@@ -39,6 +48,7 @@ export function GalaxyScene() {
 
                 <OrbitControls enablePan={true} enableZoom={true} minDistance={5} maxDistance={50} makeDefault />
                 <CameraController />
+                <AudioController />
 
                 <EffectComposer>
                     <Bloom luminanceThreshold={1.5} mipmapBlur intensity={1.5} radius={0.4} />
